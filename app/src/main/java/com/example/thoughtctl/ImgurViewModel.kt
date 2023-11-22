@@ -1,23 +1,23 @@
-package com.example.thoughtctl
-
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.thoughtctl.ImgurImage
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ImgurViewModel(private val repository: ImgurRepository) : ViewModel() {
 
-    // LiveData for observing the search results
-    val imgurImages = MutableLiveData<List<ImgurImage>>()
+    private val _imgurImages = MutableLiveData<List<ImgurImage>>()
+    val imgurImages: LiveData<List<ImgurImage>> get() = _imgurImages
 
-    // Function to search for images
     fun searchImages(query: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                val result = repository.getTopImages(query)
-                imgurImages.postValue(result)
+                val images = repository.searchImages(query)
+                _imgurImages.postValue(images)
             } catch (e: Exception) {
-                // Handle errors
+                // Handle the exception
                 e.printStackTrace()
             }
         }

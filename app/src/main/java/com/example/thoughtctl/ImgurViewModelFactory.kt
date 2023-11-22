@@ -1,5 +1,7 @@
 package com.example.thoughtctl
 
+import ImgurRepository
+import ImgurViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
